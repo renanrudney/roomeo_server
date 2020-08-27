@@ -23,4 +23,18 @@ describe('CreateUser', () => {
     expect(user.username).toBe('johndoe');
     expect(user).toHaveProperty('id');
   });
+
+  it('should not be able to create a new user with an existent username', async () => {
+    const existentUser = await createUser.execute({
+      username: 'johndoe',
+      password: '123456',
+      mobile_token: 'example-token',
+    });
+    await expect(
+      createUser.execute({
+        username: existentUser.username,
+        password: 'example',
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
