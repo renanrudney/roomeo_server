@@ -3,8 +3,18 @@ import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
 import CreateUserService from '@modules/users/services/CreateUserService';
+import ListUsersService from '@modules/users/services/ListUsersService';
+import signIn from '@shared/utils/sign';
 
 export default class UsersController {
+  public async index(_request: Request, response: Response): Promise<Response> {
+    const listUsers = container.resolve(ListUsersService);
+
+    const users = await listUsers.execute();
+
+    return response.json(classToClass(users));
+  }
+
   public async create(request: Request, response: Response): Promise<Response> {
     const { username, password, mobile_token } = request.body;
 
@@ -16,6 +26,8 @@ export default class UsersController {
       mobile_token,
     });
 
-    return response.json(classToClass(user));
+    const authorization = signIn({ user_id: user.id });
+
+    return response.json({ ...classToClass(user), authorization });
   }
 }

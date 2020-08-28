@@ -11,6 +11,7 @@ export default class CreateUsers1598485024670 implements MigrationInterface {
             type: 'varchar',
             isPrimary: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'username',
@@ -24,6 +25,7 @@ export default class CreateUsers1598485024670 implements MigrationInterface {
           {
             name: 'mobile_token',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'created_at',

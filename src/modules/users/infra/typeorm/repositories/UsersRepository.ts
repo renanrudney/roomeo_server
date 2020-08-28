@@ -23,6 +23,12 @@ class UserRepository implements IUsersRepository {
 
     return user;
   }
+
+  public async findAllUsers(): Promise<User[]> {
+    const users = await this.ormRepository.find();
+
+    return users;
+  }
 }
 
 export default UserRepository;

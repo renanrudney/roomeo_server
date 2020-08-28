@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
@@ -13,7 +13,7 @@ export default class UsersRepository implements IUsersRepository {
     Object.assign(
       user,
       {
-        id: uuid(),
+        id: v4(),
       },
       userData
     );
@@ -26,5 +26,10 @@ export default class UsersRepository implements IUsersRepository {
     const findUser = this.users.find(user => user.username === username);
 
     return findUser;
+  }
+
+  public async findAllUsers(): Promise<User[]> {
+    const { users } = this;
+    return users;
   }
 }
