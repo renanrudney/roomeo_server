@@ -8,6 +8,7 @@
 </h3>
 
 <p align="center">“A fictional video server”!</blockquote>
+<p align="center">You can manage users and conference rooms.</p>
 
 <p align="center">
   <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/renanrudney/roomeo_server">
@@ -47,15 +48,9 @@ yarn test
 
 ### Aplication Routes
 
-- **`POST /users`**: `username`, `password`, `mobile_token`;
-
-Request body example:
-```
-{
-	"username": "johndoe",
-	"password": "john123"
-}
-```
+- **`POST /users`** { `username`, `password`, `mobile_token`} : create and authenticate;
+- **`GET /users`** : all users;
+- **`POST /authenticate`** { `username`, `password` } : signIn user;
 
 
 ## Contributing
