@@ -43,7 +43,7 @@ export default class AuthenticateUserService {
       throw new AppError('Incorrect username/password!', 401);
     }
 
-    const authorization = signIn({ user_id: user.id });
+    const authorization = signIn({ username: user.username });
 
     return {
       user,

@@ -96,4 +96,42 @@ describe('App', () => {
 
     expect(response.body).toHaveProperty('authorization');
   });
+
+  it('should be able to update a user', async () => {
+    const requestUser = await request(app).post('/users').send({
+      username: 'johndoe',
+      password: '123456',
+    });
+
+    const { authorization } = requestUser.body;
+
+    const response = await request(app)
+      .put('/users')
+      .set('Authorization', `bearer ${authorization}`)
+      .send({
+        mobile_token: 'updated-token',
+      });
+
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        mobile_token: 'updated-token',
+      })
+    );
+  });
+
+  it('should be able to delete a user', async () => {
+    const requestUser = await request(app).post('/users').send({
+      username: 'johndoe',
+      password: '123456',
+    });
+
+    const { authorization } = requestUser.body;
+
+    const response = await request(app)
+      .delete('/users')
+      .set('Authorization', `bearer ${authorization}`)
+      .send();
+
+    expect(response.status).toEqual(204);
+  });
 });

@@ -48,10 +48,12 @@ yarn test
 
 ### Aplication Routes
 
-- **`POST /users`** { `username`, `password`, `mobile_token`} : create and authenticate;
-- **`GET /users`** : all users;
+- **`GET /users`** : list all users;
 - **`GET /users/:username`** : show a user;
-- **`POST /authenticate`** { `username`, `password` } : signIn user;
+- **`POST /users`** { `username`, `password`, `mobile_token`} : create and authenticate;
+- **`POST /authenticate`** { `username`, `password` } : sign in;
+- **`PUT /users`** { `mobile_token`, `password` } : update current authenticated user;
+- **`DELETE /users`** : deleted current authenticated user;
 
 
 ## Contributing

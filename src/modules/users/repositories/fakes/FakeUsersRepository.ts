@@ -38,4 +38,14 @@ export default class UsersRepository implements IUsersRepository {
 
     return findUser;
   }
+
+  public async save(user: User): Promise<User> {
+    this.users.push(user);
+
+    return user;
+  }
+
+  public async delete(user: User): Promise<void> {
+    this.users = this.users.filter(filterUser => filterUser.id !== user.id);
+  }
 }

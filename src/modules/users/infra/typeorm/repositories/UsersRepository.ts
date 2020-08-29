@@ -4,7 +4,7 @@ import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import User from '../entities/User';
 
-class UserRepository implements IUsersRepository {
+class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
 
   constructor() {
@@ -29,6 +29,16 @@ class UserRepository implements IUsersRepository {
 
     return users;
   }
+
+  public async save(user: User): Promise<User> {
+    const saveUser = await this.ormRepository.save(user);
+
+    return saveUser;
+  }
+
+  public async delete(user: User): Promise<void> {
+    await this.ormRepository.delete(user.id);
+  }
 }
 
-export default UserRepository;
+export default UsersRepository;

@@ -5,6 +5,12 @@ import authConfig from '@config/auth';
 
 import AppError from '@shared/errors/AppError';
 
+interface ITokenPayload {
+  iat: number;
+  exp: number;
+  sub: string;
+}
+
 export default function ensureAuthenticated(
   request: Request,
   _response: Response,
@@ -19,7 +25,13 @@ export default function ensureAuthenticated(
   const [, authorization] = authHeader.split(' ');
 
   try {
-    verify(authorization, authConfig.jwt.secret);
+    const verified = verify(authorization, authConfig.jwt.secret);
+
+    const { sub } = verified as ITokenPayload;
+
+    request.user = {
+      username: sub,
+    };
 
     return next();
   } catch {

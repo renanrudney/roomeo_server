@@ -3,13 +3,13 @@ import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 
 interface ISignIn {
-  user_id: string;
+  username: string;
 }
 
-export default function signIn({ user_id }: ISignIn): string {
+export default function signIn({ username }: ISignIn): string {
   const { secret, expiresIn } = authConfig.jwt;
   const token = sign({}, secret, {
-    subject: user_id,
+    subject: username,
     expiresIn,
   });
 
