@@ -20,8 +20,8 @@
 Before you begin, ensure you have met the following requirements:
 * You have installed the 12.x version of [NodeJS](https://nodejs.org/en/download/)
 * You have a [Yarn](https://classic.yarnpkg.com/en/docs/install) 1.x version  or NPM.
-* You have created a psql database: roomeo_pg and update on ormconfig.json
-* **or** run docker and create a database: roomeo_pg
+* You have created psql databases: roomeo_pg, roomeo_test and update on ormconfig.json
+* **or** run docker and create databases: roomeo_pg, roomeo_test
 ```❯ docker run --name roomeo_pg -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres```
 
 ## Installing Project
@@ -50,6 +50,7 @@ yarn test
 
 - **`POST /users`** { `username`, `password`, `mobile_token`} : create and authenticate;
 - **`GET /users`** : all users;
+- **`GET /users/:username`** : show a user;
 - **`POST /authenticate`** { `username`, `password` } : signIn user;
 
 

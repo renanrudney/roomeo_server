@@ -5,6 +5,7 @@ import { classToClass } from 'class-transformer';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import ListUsersService from '@modules/users/services/ListUsersService';
 import signIn from '@shared/utils/sign';
+import ShowUserService from '@modules/users/services/ShowUserService';
 
 export default class UsersController {
   public async index(_request: Request, response: Response): Promise<Response> {
@@ -29,5 +30,14 @@ export default class UsersController {
     const authorization = signIn({ user_id: user.id });
 
     return response.json({ ...classToClass(user), authorization });
+  }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const { username } = request.params;
+    const showUser = container.resolve(ShowUserService);
+
+    const user = await showUser.execute({ username });
+
+    return response.json(classToClass(user));
   }
 }

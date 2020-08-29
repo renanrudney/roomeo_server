@@ -32,4 +32,10 @@ export default class UsersRepository implements IUsersRepository {
     const { users } = this;
     return users;
   }
+
+  public async findById(user_id: string): Promise<User | undefined> {
+    const findUser = this.users.find(user => user.id === user_id);
+
+    return findUser;
+  }
 }
