@@ -5,7 +5,7 @@ import DeleteUserService from './DeleteUserService';
 let fakeUsersRepository: FakeUsersRepository;
 let deleteUser: DeleteUserService;
 
-describe('ShowUser', () => {
+describe('DeleteUser', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     deleteUser = new DeleteUserService(fakeUsersRepository);

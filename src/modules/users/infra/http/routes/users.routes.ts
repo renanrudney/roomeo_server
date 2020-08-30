@@ -18,7 +18,7 @@ usersRouter.post(
       mobile_token: Joi.string(),
     },
   }),
-  usersController.create
+  usersController.store
 );
 usersRouter.put('/', ensureAuthenticated, usersController.update);
 usersRouter.delete('/', ensureAuthenticated, usersController.delete);

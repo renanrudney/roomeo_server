@@ -49,11 +49,15 @@ yarn test
 ### Aplication Routes
 
 - **`GET /users`** : list all users;
-- **`GET /users/:username`** : show a user;
-- **`POST /users`** { `username`, `password`, `mobile_token`} : create and authenticate;
-- **`POST /authenticate`** { `username`, `password` } : sign in;
+- **`GET /users/:username`** : user informations;
+- **`POST /users`** { `username`, `password`, `mobile_token`} : create and authenticate a user;
+- **`POST /authenticate`** { `username`, `password` } : authenticate user;
 - **`PUT /users`** { `mobile_token`, `password` } : update current authenticated user;
 - **`DELETE /users`** : deleted current authenticated user;
+- **`POST /rooms`** { `name`, `capacity` } : create and host a room;
+- **`GET /rooms/:guid`** : room informations;
+- **`POST /rooms/:guid/join`** : joins room and show room informations;
+- **`POST /rooms/:guid/leave`** : leaves room;
 
 
 ## Contributing
