@@ -33,6 +33,12 @@ export default class JoinsRoomService {
       throw new AppError('Room not found!');
     }
 
+    const participants = room.participants.length;
+
+    if (participants >= room.capacity) {
+      throw new AppError('Room is full!');
+    }
+
     const userInRoom = room.participants.find(
       participant => participant.username === username
     );

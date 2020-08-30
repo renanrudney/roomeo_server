@@ -26,4 +26,16 @@ export default class RoomsRepository implements IRoomsRepository {
   public async findById(id: string): Promise<Room | undefined> {
     return this.ormRepository.findOne(id);
   }
+
+  public async findByParticipant(
+    participant: string | undefined
+  ): Promise<Room[]> {
+    const rooms = await this.ormRepository
+      .createQueryBuilder('rooms')
+      .leftJoinAndSelect('rooms.participants', 'user')
+      .where('user.username = :participant', { participant })
+      .getMany();
+
+    return rooms;
+  }
 }

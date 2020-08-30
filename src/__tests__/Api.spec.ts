@@ -200,6 +200,13 @@ describe('App', () => {
     });
 
     const {
+      body: { authorization: authJoin },
+    } = await request(app).post('/users').send({
+      username: 'johndoe-user',
+      password: '123456',
+    });
+
+    const {
       body: { id },
     } = await request(app)
       .post('/rooms')
@@ -211,7 +218,7 @@ describe('App', () => {
 
     const response = await request(app)
       .post(`/rooms/${id}/join`)
-      .set('Authorization', `bearer ${authorization}`)
+      .set('Authorization', `bearer ${authJoin}`)
       .send();
 
     expect(response.body.participants).toEqual(
@@ -248,5 +255,71 @@ describe('App', () => {
       .send();
 
     expect(response.status).toEqual(204);
+  });
+
+  it('should be able to change host', async () => {
+    const {
+      body: { authorization },
+    } = await request(app).post('/users').send({
+      username: 'johndoe',
+      password: '123456',
+    });
+
+    const {
+      body: { id },
+    } = await request(app)
+      .post('/rooms')
+      .set('Authorization', `bearer ${authorization}`)
+      .send({
+        name: 'johndoe room',
+        capacity: 10,
+      });
+
+    const {
+      body: { username },
+    } = await request(app).post('/users').send({
+      username: 'johndoe-host',
+      password: '123456',
+    });
+
+    const response = await request(app)
+      .patch(`/rooms/${id}`)
+      .set('Authorization', `bearer ${authorization}`)
+      .send({
+        username,
+      });
+
+    expect(response.body.host).toEqual(expect.objectContaining({ username }));
+  });
+
+  it('should be able to list user rooms', async () => {
+    const responseUser = await request(app).post('/users').send({
+      username: 'johndoe',
+      password: '123456',
+    });
+
+    const { authorization, username } = responseUser.body;
+
+    await request(app)
+      .post('/rooms')
+      .set('Authorization', `bearer ${authorization}`)
+      .send({
+        name: 'johndoe room',
+        capacity: 10,
+      });
+
+    const response = await request(app)
+      .get(`/rooms/?username=${username}`)
+      .send();
+
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          participants: expect.arrayContaining([
+            expect.objectContaining({ username }),
+          ]),
+        }),
+      ])
+    );
   });
 });

@@ -28,6 +28,7 @@ describe('LeavesRoom', () => {
     const createdRoom = await fakeRoomsRepository.create({
       host,
       name: 'room',
+      participants: [host],
     });
 
     createdRoom.participants.push(userJoined);
@@ -37,7 +38,7 @@ describe('LeavesRoom', () => {
       guid: createdRoom.id,
     });
 
-    expect(room.participants).toEqual([]);
+    expect(room).toBeUndefined();
   });
 
   it('should not be able to leaves a room with an nonexisting user', async () => {
@@ -77,6 +78,7 @@ describe('LeavesRoom', () => {
     const createdRoom = await fakeRoomsRepository.create({
       host,
       name: 'room',
+      participants: [host],
     });
 
     await expect(

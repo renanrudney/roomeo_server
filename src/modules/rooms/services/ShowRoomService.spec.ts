@@ -23,6 +23,7 @@ describe('ShowRoom', () => {
     const createdRoom = await fakeRoomsRepository.create({
       host,
       name: 'room',
+      participants: [host],
     });
 
     const room = await showRoom.execute({ id: createdRoom.id });

@@ -20,8 +20,27 @@ roomsRouter.post(
   }),
   roomsController.store
 );
+roomsRouter.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: {
+      username: Joi.string().required(),
+    },
+  }),
+  roomsController.index
+);
 
 roomsRouter.post('/:guid/join', ensureAuthenticated, switchController.create);
 roomsRouter.post('/:guid/leave', ensureAuthenticated, switchController.destroy);
+roomsRouter.patch(
+  '/:guid',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.BODY]: {
+      username: Joi.string().required(),
+    },
+  }),
+  switchController.update
+);
 
 export default roomsRouter;

@@ -3,7 +3,6 @@ import { injectable, inject } from 'tsyringe';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import IRoomsRepository from '../repositories/IRoomsRepository';
-import Room from '../infra/typeorm/entities/Room';
 
 interface IRequest {
   username: string;
@@ -20,7 +19,7 @@ export default class LeavesRoomService {
     private roomsRepository: IRoomsRepository
   ) {}
 
-  public async execute({ username, guid }: IRequest): Promise<Room> {
+  public async execute({ username, guid }: IRequest): Promise<void> {
     const user = await this.usersRepository.findByUsername(username);
 
     if (!user) {
@@ -33,18 +32,15 @@ export default class LeavesRoomService {
       throw new AppError('Room not found!');
     }
 
-    const userInRoom = room.participants.find(
+    const userIndex = room.participants.findIndex(
       participant => participant.username === username
     );
 
-    if (!userInRoom) {
-      throw new AppError('User is not a participant!');
+    if (userIndex > -1) {
+      room.participants.splice(userIndex, 1);
     } else {
-      room.participants = room.participants.filter(
-        participant => participant.username !== username
-      );
-
-      return this.roomsRepository.save(room);
+      throw new AppError('User is not a participant!');
     }
+    await this.roomsRepository.save(room);
   }
 }

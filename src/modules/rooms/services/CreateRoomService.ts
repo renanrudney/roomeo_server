@@ -32,6 +32,7 @@ export default class CreateRoomService {
       host,
       name,
       capacity: capacity || 5,
+      participants: [host],
     });
 
     return room;

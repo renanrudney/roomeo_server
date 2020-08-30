@@ -28,6 +28,7 @@ describe('JoinsRoom', () => {
     const createdRoom = await fakeRoomsRepository.create({
       host,
       name: 'room',
+      participants: [host],
     });
 
     const room = await joinRoom.execute({
@@ -65,7 +66,33 @@ describe('JoinsRoom', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to join a room already participant', async () => {
+  it('should not be able to join a full room', async () => {
+    const host = await fakeUsersRepository.create({
+      username: 'johndoe',
+      password: '123456',
+    });
+
+    const userJoin = await fakeUsersRepository.create({
+      username: 'johndoe-join',
+      password: '123456',
+    });
+
+    const createdRoom = await fakeRoomsRepository.create({
+      host,
+      name: 'room',
+      participants: [host],
+      capacity: 1,
+    });
+
+    await expect(
+      joinRoom.execute({
+        username: userJoin.username,
+        guid: createdRoom.id,
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to join a room already participant', async () => {
     const host = await fakeUsersRepository.create({
       username: 'johndoe',
       password: '123456',
@@ -79,6 +106,7 @@ describe('JoinsRoom', () => {
     const createdRoom = await fakeRoomsRepository.create({
       host,
       name: 'room',
+      participants: [host],
     });
 
     await joinRoom.execute({

@@ -1,11 +1,23 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import CreateRoomService from '@modules/rooms/services/CreateRoomService';
-import { classToClass } from 'class-transformer';
 import ShowRoomService from '@modules/rooms/services/ShowRoomService';
+import ShowUserRoomsService from '@modules/rooms/services/ShowUserRoomsService';
 
 export default class RoomsController {
+  public async index(request: Request, response: Response): Promise<Response> {
+    const { username } = request.query;
+    const showRooms = container.resolve(ShowUserRoomsService);
+
+    const queryUsername = username?.toString();
+
+    const rooms = await showRooms.execute({ username: queryUsername });
+
+    return response.json(classToClass(rooms));
+  }
+
   public async store(request: Request, response: Response): Promise<Response> {
     const { username } = request.user;
     const { name, capacity } = request.body;
